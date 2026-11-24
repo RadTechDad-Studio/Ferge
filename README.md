@@ -2,6 +2,8 @@
 
 A browser-local workbench for comparing and merging **two, three, or four text files simultaneously**. Ferge runs as a static web app. It compares and merges your text in your browser and needs no backend or build step.
 
+[Open Ferge](https://radtechdad-studio.github.io/Ferge/)
+
 ## Run locally
 
 Clone the repository and serve the `dist/` directory over HTTP with Python 3:

@@ -174,7 +174,7 @@ Earlier full automated visual browser QA was blocked in the cloud environment by
 - The preview is owner-private. Do not change its audience.
 - The original cloud checkout has `.openai/hosting.json` and a Sites-managed source remote at `git.chatgpt-team.site`. That is not a GitHub push.
 - Portable ZIPs omit `.openai/`, `.git/`, `node_modules/`, and temporary credential-handling scripts. Never copy or reconstruct source credentials from chat history.
-- The public GitHub repository includes a Pages workflow. Repository publication and Pages deployment are separate actions.
+- The user authorized GitHub Pages hosting. The public site uses the Actions workflow on main at https://radtechdad-studio.github.io/Ferge/.
 - Local migration is confirmed: the Mac folder contains `dist/`, `tests/`, `package.json`, `package-lock.json`, `.github/`, and the documentation directly in its root, not inside a second nested `ferge/` directory.
 - If the user already copied the previous ZIP, add `AGENTS.md` and `HANDOFF.md` to that root. Do not overwrite local code changes merely to update documentation.
 
