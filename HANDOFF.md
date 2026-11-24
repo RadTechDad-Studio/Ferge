@@ -4,9 +4,9 @@ This file supplies project context for a new chat. It is a snapshot, not evidenc
 
 ## Current state
 
-- Product name: **Ferge**. Browser title: **Ferge — The File Merger**.
+- Product name: **Ferge**. Browser title: **Compare Text Files Online | Ferge**.
 - Version selected by the user: **v1.0**, displayed beside the Ferge name; package metadata is **1.0.0**. The imported 2.3.0 value was not user-approved. This does not imply a published release.
-- The header subtitle is **The File Merger**, replacing “Text comparison” at the user’s request. The version and subtitle share the same 10px, normal-weight, muted typography rule. The stylesheet URL includes a cache key so older cached CSS does not leave the version at the inherited large brand size.
+- The header heading reads **Compare and merge up to 4 text files** on two lines below the name. The 52px icon spans the name and both heading lines. The version and subtitle share the same 10px, normal-weight, muted typography rule. The stylesheet URL includes a cache key so older cached CSS does not leave the version at the inherited large brand size.
 - Latest application commit in the original cloud checkout: `92df751` — "Add an optional Ko-fi support link in Help". A downloaded ZIP does not include that Git history.
 - The active checkout is at `/Users/darrell/Developer/GitHub/RadTechDad-Studio/Ferge`.
 - The original chat executes in a separate Linux cloud workspace. Its checkout is `/workspace/sites/kaleidoscope`; this old directory name is historical. The latest source bundle is `/workspace/ferge-source.zip` and contains a `ferge/` top-level folder.

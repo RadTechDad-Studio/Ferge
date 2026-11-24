@@ -91,7 +91,7 @@ const repeatProbe = createTour({
 repeatProbe.maybeStart();
 assert.equal(repeatProbe.isOpen(), false);
 
-assert.equal(w.document.title, "Ferge — The File Merger");
+assert.equal(w.document.title, "Compare Text Files Online | Ferge");
 assert.equal($("#savedState").textContent, "Saved in browser");
 assert.ok($("#savedState").title.includes("Files on disk are not updated automatically"));
 assert.equal($$(".pane-card").length, 4);

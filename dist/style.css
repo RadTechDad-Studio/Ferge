@@ -183,8 +183,8 @@ select option {
   flex-shrink: 0;
 }
 .brand > img {
-  width: 32px;
-  height: 32px;
+  width: 52px;
+  height: 52px;
   flex-shrink: 0;
 }
 .brand-title {
@@ -201,7 +201,7 @@ select option {
 }
 .brand-note {
   display: block;
-  margin-top: 5px;
+  margin: 5px 0 0;
 }
 .file-actions {
   display: flex;
@@ -1367,9 +1367,6 @@ html[data-color-scheme="dark"] .search-hit {
   .app-header {
     gap: 12px;
     padding: 0 18px;
-  }
-  .brand-note {
-    display: none;
   }
   .brand {
     font-size: 24px;

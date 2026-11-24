@@ -16,7 +16,7 @@ python3 -m http.server 8000 --directory dist
 
 Open `http://localhost:8000`. Use an HTTP server rather than double-clicking the HTML file: browser security rules restrict ES modules on `file://` URLs.
 
-The header displays the selected **Patch** document icon and **v1.0** beside the Ferge name, with **The File Merger** underneath. The browser tab uses the same icon. Its white tile preserves the navy outline and red, green, and blue lines across all themes.
+The header displays the selected **Patch** document icon and **v1.0** beside the Ferge name, with **Compare and merge up to 4 text files** on two lines underneath. The browser tab uses the same icon. Its white tile preserves the navy outline and red, green, and blue lines across all themes.
 
 ## The Workbench
 
