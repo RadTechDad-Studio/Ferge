@@ -2,7 +2,15 @@
 
 A browser-local workbench for comparing and merging **two, three, or four text files simultaneously**. Ferge runs as a static web app. It compares and merges your text in your browser and needs no backend or build step.
 
-[Open Ferge](https://radtechdad-studio.github.io/Ferge/)
+## Compare four versions side by side
+
+The built-in example shows an original JavaScript file and three revisions. Pick a **baseline**, review the highlighted differences across all four panes, then copy a selected change between the baseline and another version.
+
+![Ferge comparing four JavaScript files side by side, with baseline.js marked as the baseline and draft.js marked as the merge target](docs/assets/ferge-four-file-demo.jpg)
+
+**[Try Ferge in your browser](https://radtechdad-studio.github.io/Ferge/)**
+
+On a first visit, skip the tour to see the example right away. To reload it later, go to **Settings → General → Try an example** and load the four-file JavaScript example.
 
 ## Run locally
 
