@@ -1,0 +1,14 @@
+{
+  "name": "ferge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "test:dom": "node tests/dom.integration.mjs"
+  },
+  "description": "A browser-local workbench for comparing and merging two, three, or four text files.",
+  "devDependencies": {
+    "jsdom": "31.0.1"
+  }
+}

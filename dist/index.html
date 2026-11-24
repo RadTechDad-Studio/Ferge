@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f7f8fa" />
+    <title>Ferge — The File Merger</title>
+    <meta
+      name="description"
+      content="Compare and merge two, three, or four text files in one private, browser-local workbench."
+    />
+    <link rel="icon" href="icon.svg?v=patch" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css?v=1.0-baseline-hint" />
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="app-header">
+        <a class="brand" href="./" aria-label="Ferge home">
+          <img src="icon.svg?v=patch" alt="" width="32" height="32" />
+          <span>
+            <span class="brand-title">Ferge<span class="brand-version" aria-label="Version 1.0">v1.0</span></span>
+            <span class="brand-note">The File Merger</span>
+          </span>
+        </a>
+        <div class="header-support" role="group" aria-label="Support Ferge">
+          <a class="header-support-link" href="https://ko-fi.com/radtechdad"
+            target="_blank" rel="noopener noreferrer"
+            aria-label="Support Ferge on Ko-fi (opens in a new tab)"
+            title="Support Ferge on Ko-fi"
+            ><img src="assets/support/kofi-symbol.webp" alt="" width="27" height="27" /></a>
+          <a class="header-support-link" href="https://buymeacoffee.com/radtechdad"
+            target="_blank" rel="noopener noreferrer"
+            aria-label="Support Ferge on Buy Me a Coffee (opens in a new tab)"
+            title="Support Ferge on Buy Me a Coffee"
+            ><img src="assets/support/bmc-logo.png" alt="" width="27" height="27" /></a>
+        </div>
+        <div class="file-actions">
+          <button id="openButton" data-icon="folder">
+            Open<span class="shortcut">⌘O</span></button
+          ><button id="pasteButton" data-icon="paste">Paste text</button>
+        </div>
+        <div class="mode-switch" role="group" aria-label="Comparison layout">
+          <button
+            data-mode="blocks"
+            aria-pressed="false"
+            title="Align corresponding regions · Ctrl/⌘1"
+          >
+            Blocks</button
+          ><button
+            data-mode="fluid"
+            aria-pressed="true"
+            title="Natural text flow with connections · Ctrl/⌘2"
+          >
+            Fluid</button
+          ><button
+            data-mode="unified"
+            aria-pressed="false"
+            title="Show baseline deletions and file additions · Ctrl/⌘3"
+          >
+            Unified
+          </button>
+        </div>
+        <div class="header-actions">
+          <button id="findButton" data-icon="search">Find</button
+          ><button id="downloadButton" data-icon="download" aria-expanded="false" aria-controls="downloadMenu">
+            Download file</button
+          ><button
+            id="settingsButton"
+            data-icon="settings"
+            aria-label="Settings"
+            title="Settings"
+            aria-haspopup="dialog"
+            aria-controls="settings"
+          ></button
+          ><button
+            id="helpButton"
+            data-icon="help"
+            aria-label="About Ferge"
+            title="About Ferge"
+          ></button>
+        </div>
+      </header>
+      <section
+        id="fileShelf"
+        class="file-shelf"
+        aria-label="Loaded files, all shown in the comparison"
+      >
+        <div class="shelf-meta">
+          <span>YOUR FILES <output id="fileCount">4 / 4</output></span>
+        </div>
+        <div class="shelf-row">
+          <div id="shelfFiles" class="shelf-files"></div>
+          <div class="shelf-actions">
+            <button id="addButton" data-icon="plus">Add file</button
+            ><button id="newButton">New text</button>
+            <button id="clearAllButton" title="Close all files and leave two empty panes. Undo restores them.">Clear all</button>
+          </div>
+        </div>
+      </section>
+      <div class="comparison-info">
+        <div>
+          <label for="baselineSelect">Baseline</label
+          ><select id="baselineSelect" aria-label="Baseline file"></select
+          ><span class="info-divider"></span
+          ><span id="comparisonSummary" aria-live="polite"></span>
+        </div>
+        <span id="layoutHint"></span>
+      </div>
+      <div class="findbar" id="findbar" hidden>
+        <span data-icon="search"></span
+        ><input
+          id="search"
+          aria-label="Find across all files"
+          placeholder="Find across all files…"
+          autocomplete="off"
+        /><span id="searchCount" aria-live="polite"></span
+        ><button
+          id="findPrev"
+          aria-label="Previous match"
+          data-icon="up"
+        ></button
+        ><button id="findNext" aria-label="Next match" data-icon="down"></button
+        ><button
+          id="closeFind"
+          aria-label="Close search"
+          data-icon="close"
+        ></button>
+      </div>
+      <div class="comparison-scroll" id="comparisonScroll">
+        <section
+          id="comparisonGrid"
+          class="comparison-grid"
+          aria-label="Simultaneous text comparison"
+        ></section>
+      </div>
+      <footer class="statusbar">
+        <div class="change-navigation">
+          <span class="status-dot" aria-hidden="true"></span
+          ><span id="changeCount" aria-live="polite">No changes</span
+          ><button
+            id="previousButton"
+            data-icon="up"
+            aria-label="Previous change"
+            title="Previous change · Alt+Up"
+          ></button
+          ><button
+            id="nextButton"
+            data-icon="down"
+            aria-label="Next change"
+            title="Next change · Alt+Down"
+          ></button>
+        </div>
+        <div class="merge-controls">
+          <label for="targetSelect">Merge with</label
+          ><select
+            id="targetSelect"
+            aria-label="File to merge"
+          ></select
+          ><button id="toBaseline" data-icon="mergeLeft">
+            Copy to baseline</button
+          ><button id="undoButton" data-icon="undo" disabled>Undo</button
+          ><button id="fromBaseline" data-icon="mergeRight">
+            Copy from baseline
+          </button>
+        </div>
+        <div class="status-end">
+          <span id="savedState">Saved in browser</span
+          ><button
+            id="syncButton"
+            data-icon="link"
+            aria-label="Link scrolling"
+            title="Link scrolling"
+            aria-pressed="true"
+          ></button
+          ><button
+            id="wrapButton"
+            data-icon="wrap"
+            aria-label="Wrap long lines"
+            title="Wrap long lines"
+            aria-pressed="false"
+          ></button>
+        </div>
+      </footer>
+    </main>
+    <dialog id="settings" aria-labelledby="settingsTitle">
+      <header class="settings-heading">
+        <h2 id="settingsTitle">Settings</h2>
+        <button
+          id="closeSettings"
+          data-icon="close"
+          aria-label="Close settings"
+          type="button"
+        ></button>
+      </header>
+      <div class="settings-tabs" role="tablist" aria-label="Settings sections" aria-orientation="vertical">
+        <button id="generalTab" type="button" role="tab" aria-controls="generalPanel" aria-selected="true">General</button>
+        <button id="appearanceTab" type="button" role="tab" aria-controls="appearancePanel" aria-selected="false" tabindex="-1">Appearance</button>
+      </div>
+      <div id="generalPanel" role="tabpanel" aria-labelledby="generalTab">
+        <label
+          >Font size<span class="font-controls"
+            ><button id="fontDown" aria-label="Decrease font size">−</button
+            ><output id="fontSize">13</output
+            ><button id="fontUp" aria-label="Increase font size">+</button></span
+          ></label
+        >
+        <label for="textFont">Text font<select id="textFont"></select></label>
+        <div class="custom-text-font">
+          <button type="button" id="chooseTextFont" disabled>Choose font file…</button>
+          <input type="file" id="textFontFile" accept=".woff2,.woff,.ttf,.otf" hidden />
+          <span id="textFontStatus" role="status"></span>
+        </div>
+        <label
+          >Syntax highlighting<input
+            id="syntaxToggle"
+            type="checkbox"
+            checked /></label
+        ><label
+          >Line numbers<input id="numbersToggle" type="checkbox" checked /></label
+        ><label
+          >Invisible characters<input
+            id="invisiblesToggle"
+            type="checkbox" /></label
+        ><label
+          >Ignore whitespace<input id="ignoreToggle" type="checkbox" /></label
+        ><label>Wrap long lines<input id="wrapToggle" type="checkbox" /></label
+        ><label
+          >Link scrolling<input id="syncToggle" type="checkbox" checked
+        /></label>
+        <section class="example-loader" aria-labelledby="exampleLabel">
+          <label id="exampleLabel" for="exampleSelect">Try an example</label>
+          <select id="exampleSelect" aria-describedby="exampleDescription exampleNotice"></select>
+          <p id="exampleDescription"></p>
+          <button id="demoButton" type="button" class="restore-button">Load example</button>
+          <p id="exampleNotice">Replaces the current files. Undo brings them back.</p>
+        </section>
+      </div>
+      <div id="appearancePanel" role="tabpanel" aria-labelledby="appearanceTab" hidden>
+        <fieldset class="appearance-mode">
+          <legend>Mode</legend>
+          <div class="appearance-mode-options">
+            <label><input type="radio" name="appearanceMode" value="light" />Light</label>
+            <label><input type="radio" name="appearanceMode" value="dark" />Dark</label>
+            <label><input type="radio" name="appearanceMode" value="auto" />Auto</label>
+          </div>
+        </fieldset>
+        <label class="theme-field" for="themeSelect">
+          Theme
+          <select id="themeSelect"></select>
+        </label>
+        <details id="themeEditor" class="theme-editor">
+          <summary><span class="theme-editor-label">Edit Theme</span></summary>
+          <div class="theme-editor-heading">
+            <p id="editingPalette"></p>
+            <button type="button" id="resetThemeColors">Reset palette</button>
+          </div>
+          <div id="themeColorGroups"></div>
+        </details>
+      </div>
+    </dialog>
+    <section
+      id="downloadMenu"
+      class="popover download-menu"
+      hidden
+      aria-label="Download file"
+    >
+      <strong>Download file</strong>
+      <p>
+        Choose a file to save its current contents, including merged changes,
+        with its filename. Files on disk are not updated automatically.
+      </p>
+      <div id="downloadOptions"></div>
+    </section>
+    <dialog id="fileEditor">
+      <form method="dialog">
+        <header class="dialog-header">
+          <div>
+            <span class="eyebrow">FERGE / TEXT SOURCE</span>
+            <h2 id="editorTitle">Edit file</h2>
+          </div>
+          <button
+            value="cancel"
+            class="icon-button"
+            data-icon="close"
+            aria-label="Close text editor"
+          ></button>
+        </header>
+        <div class="editor-meta">
+          <label
+            >File name<input
+              id="editorName"
+              aria-label="File name"
+              placeholder="Untitled.txt"
+              required /></label
+          ><label id="destinationLabel"
+            >Destination<select
+              id="editorDestination"
+              aria-label="Paste destination"
+            ></select
+          ></label>
+        </div>
+        <textarea
+          id="editorText"
+          aria-label="File contents"
+          spellcheck="false"
+          placeholder="Paste or type text here. You can also drop a text file."
+        ></textarea>
+        <footer>
+          <span>Text stays on this device.</span
+          ><button value="cancel">Cancel</button
+          ><button id="saveFileButton" type="button" class="primary">
+            Apply changes
+          </button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="exampleChoice" aria-labelledby="exampleChoiceTitle">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow">YOU’RE READY</span>
+          <h2 id="exampleChoiceTitle">Try your own files?</h2>
+        </div>
+      </div>
+      <p>Keep this example to explore, or start with two empty panes for your own files. Find more examples under Settings → General.</p>
+      <footer>
+        <button id="keepExampleButton" type="button">Keep example</button>
+        <button id="clearExampleButton" type="button" class="primary">Start with empty panes</button>
+      </footer>
+    </dialog>
+    <dialog id="help">
+      <form method="dialog">
+        <header class="dialog-header">
+          <div>
+            <span class="eyebrow">MEET YOUR WORKBENCH</span>
+            <h2>A little perspective.<br />A clearer comparison.</h2>
+          </div>
+          <button
+            value="close"
+            class="icon-button"
+            data-icon="close"
+            aria-label="Close help"
+          ></button>
+        </header>
+        <p>
+          Ferge compares
+          <strong>two, three, or four text files at once</strong>. All loaded
+          files stay visible. Choose a baseline to see how every other file
+          differs.
+        </p>
+        <button type="button" id="startTour" class="tour-replay">
+          Take the quick tour
+        </button>
+        <dl>
+          <div>
+            <dt>Blocks</dt>
+            <dd>Corresponding regions line up across every file.</dd>
+          </div>
+          <div>
+            <dt>Fluid</dt>
+            <dd>
+              Files keep their natural flow. Curves connect corresponding
+              regions in neighboring panes.
+            </dd>
+          </div>
+          <div>
+            <dt>Unified</dt>
+            <dd>
+              Each comparison file interleaves baseline deletions and its own
+              additions. The baseline stays visible.
+            </dd>
+          </div>
+        </dl>
+        <div class="legend">
+          <span class="added">+ Added</span
+          ><span class="deleted">− Deleted</span
+          ><span class="changed">~ Changed</span>
+        </div>
+        <h3>Text differences</h3>
+        <p>
+          The colored backgrounds on lines of text show additions, deletions,
+          and edits. These differences are calculated against the baseline file.
+          Uncolored text matches the baseline, subject to the Ignore whitespace
+          setting. In Unified mode, an edit appears as a red old version and a
+          green replacement.
+        </p>
+        <h3>Baseline and merge target</h3>
+        <p>
+          <strong>Baseline:</strong> the reference file chosen in the Baseline
+          menu. Its file card and column marker identify that reference.
+        </p>
+        <p>
+          <strong>Merge target:</strong> the other file selected with the
+          bullseye button or the Merge with menu. Its outline, tinted header,
+          filled bullseye, and <strong>Merge target</strong> badge identify the
+          file used by the copy controls. A file cannot be both the baseline and
+          the merge target.
+        </p>
+        <p>
+          These file-selection markers are separate from the colored text
+          backgrounds. Their colors come from the active theme palette.
+          Selecting either file role does not edit its contents.
+        </p>
+        <h3>Copy a changed region</h3>
+        <p>
+          First select a changed region in a comparison pane. With A as the
+          baseline and B as the merge target,
+          <strong>Copy to baseline</strong> copies B’s selected region into A.
+          <strong>Copy from baseline</strong> copies A’s region into B.
+          <strong>Undo</strong> restores the previous file contents.
+        </p>
+        <p>
+          Drop files onto the shelf to add them; drop a single file onto a pane
+          to replace it. Images and binary files are excluded. Automatic syntax
+          detection can be overridden in each file’s language menu.
+        </p>
+        <p>
+          <strong>Clear all</strong> closes every file and leaves two empty drop
+          panes. Closing either of the last two files also leaves an empty pane.
+          <strong>Undo</strong> restores the files. Drop a file into an empty pane
+          or use its <strong>Choose file</strong> button to get started.
+        </p>
+        <h3>Privacy and saving</h3>
+        <p>
+          Ferge compares files and pasted text entirely in your browser. It never
+          sends your filenames, text, or edits to a server.
+        </p>
+        <p>
+          <strong>Saved in browser</strong> means your session is remembered in
+          this browser. Imported files on disk are not updated automatically.
+          Use <strong>Download file</strong> to save the current contents of any
+          loaded file, including the baseline, with its filename.
+        </p>
+        <p class="help-shortcuts">
+          Ctrl/⌘1–3: layout · Ctrl/⌘F: find · Alt+Up/Down: changes · Ctrl/⌘Z:
+          undo
+        </p>
+        <div class="help-support" role="group" aria-label="Support Ferge">
+          <a
+            class="help-support-link help-support-kofi"
+            href="https://ko-fi.com/radtechdad"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Support Ferge on Ko-fi (opens in a new tab)"
+            ><img src="assets/support/kofi-cup.png" alt="" width="28" height="23" />Support me on Ko-fi</a
+          >
+          <a
+            class="help-support-link help-support-coffee"
+            href="https://buymeacoffee.com/radtechdad"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Support Ferge on Buy Me a Coffee (opens in a new tab)"
+            ><img src="assets/support/buy-me-a-coffee.png" alt="Buy me a coffee" width="157" height="44" /></a
+          >
+        </div>
+        <footer>
+          <span>Private by design. No uploads or accounts.</span>
+          <button value="close" class="primary">Got it</button>
+        </footer>
+      </form>
+    </dialog>
+    <input
+      type="file"
+      id="fileInput"
+      hidden
+      multiple
+      accept="text/*,.txt,.js,.mjs,.ts,.tsx,.jsx,.py,.json,.jsonc,.html,.css,.scss,.xml,.md,.yaml,.yml,.toml,.ini,.sh,.rs,.go,.swift,.java,.c,.cpp,.h,.sql,.log,.csv,.patch,.diff"
+    />
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="app.js?v=1.0-baseline-hint"></script>
+  </body>
+</html>
