@@ -1,12 +1,14 @@
 # Ferge
 
-A browser-local workbench for comparing and merging **two, three, or four text files simultaneously**. A static SPA with no server, account system, external CDN, or build step.
+A browser-local workbench for comparing and merging **two, three, or four text files simultaneously**. Ferge runs as a static web app. It compares and merges your text in your browser and needs no backend or build step.
 
 ## Run locally
 
-Serve the `dist/` directory over HTTP. For example, with Python 3:
+Clone the repository and serve the `dist/` directory over HTTP with Python 3:
 
 ```sh
+git clone https://github.com/RadTechDad-Studio/Ferge.git
+cd Ferge
 python3 -m http.server 8000 --directory dist
 ```
 
@@ -79,7 +81,7 @@ Expand **Edit Theme** in **Appearance** to customize the active palette’s inte
 
 Under **Settings → General**, **Text font** applies to the comparison panes and text editor. Choose JetBrains Mono (the default), Fira Code, Cascadia Code, or Source Code Pro. Ferge ships with all four fonts. Use **Choose font file…** to add your own WOFF2, WOFF, TTF, or OTF file. Ferge keeps the selected font and one custom font file in this browser. You can switch between the presets and the custom font, or replace the custom file from Settings.
 
-The **General** tab also includes font size, line numbers, invisible characters, ignoring whitespace, linked scrolling, wrapping, and syntax coloring. Search works across all visible panes, including phrases spanning syntax-token boundaries.
+The **General** tab also includes font size, line numbers, invisible characters, ignoring whitespace, linked scrolling, wrapping, and syntax coloring. The bottom-right status bar also has shortcuts for linked scrolling and line wrapping. Search works across all visible panes, including phrases spanning syntax-token boundaries.
 
 Automatic syntax coloring is skipped above 200 KB; choosing a language manually can override that. Detection is heuristic. Large dissimilar replacements use coarser diff groups to bound memory.
 
@@ -105,15 +107,9 @@ Small **Ko-fi** and **Buy Me a Coffee** icons sit between two vertical dividers 
 
 ## GitHub Pages
 
-The source is ready for GitHub Pages. **Nothing has been pushed to GitHub.** The Ferge Workbench is also available through the existing privately hosted preview.
+The public source repository is [RadTechDad-Studio/Ferge](https://github.com/RadTechDad-Studio/Ferge). To deploy your own copy to GitHub Pages, select **GitHub Actions** as the Pages source in your repository settings, then run the **Deploy Ferge to GitHub Pages** workflow. The workflow also runs on pushes to `main`. It runs the unit and DOM tests before deploying `dist/`.
 
-1. Put the source in a repository whose default branch is `main`.
-2. Under **Settings → Pages → Build and deployment → Source**, select **GitHub Actions**.
-3. Push to `main`, or manually run the included **Deploy Ferge to GitHub Pages** workflow.
-
-The workflow installs the development test dependency, runs unit and DOM integration checks, then publishes `dist/`. Relative asset/module paths work at a project URL such as `https://username.github.io/ferge/`. There are no client-side history routes requiring a fallback. For manual hosting, publish the contents of `dist/`.
-
-The checkout's `.openai/hosting.json` configures the existing private preview and is excluded from the Ferge source archive. That preview now uses Ferge’s Workbench design. Its hosting-level sign-in gate is separate from the static application; a normal static deployment needs no account system.
+For other static hosts, publish the contents of `dist/` directly.
 
 ## Tests
 

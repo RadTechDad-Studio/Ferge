@@ -8,10 +8,10 @@ This file supplies project context for a new chat. It is a snapshot, not evidenc
 - Version selected by the user: **v1.0**, displayed beside the Ferge name; package metadata is **1.0.0**. The imported 2.3.0 value was not user-approved. This does not imply a published release.
 - The header subtitle is **The File Merger**, replacing “Text comparison” at the user’s request. The version and subtitle share the same 10px, normal-weight, muted typography rule. The stylesheet URL includes a cache key so older cached CSS does not leave the version at the inherited large brand size.
 - Latest application commit in the original cloud checkout: `92df751` — "Add an optional Ko-fi support link in Help". A downloaded ZIP does not include that Git history.
-- The user wants to continue in a local project folder. Their registered Mac project is **Web Dev - Ferge**, at `/Users/darrell/Developer/GitHub/RadTechDad/Ferge`.
+- The active checkout is at `/Users/darrell/Developer/GitHub/RadTechDad-Studio/Ferge`.
 - The original chat executes in a separate Linux cloud workspace. Its checkout is `/workspace/sites/kaleidoscope`; this old directory name is historical. The latest source bundle is `/workspace/ferge-source.zip` and contains a `ferge/` top-level folder.
-- The Mac import has been verified: source, tests, package files, workflow, and documentation are directly in the project root. This is a portable source copy with no `.git` directory. A local HTTP preview runs at http://localhost:8000 when its server process is active.
-- Do not push anything to GitHub. This has been the user's explicit, repeated instruction. They clarified that source **and the existing hosted preview** may be updated.
+- The initial portable import is now a Git checkout. Local `main` tracks `origin/main`.
+- The user authorized creating the public RadTechDad-Studio/Ferge repository and pushing the v1.0 source (commit `0256217`). Follow AGENTS.md for future publishing actions.
 
 ## Approved direction
 
@@ -88,7 +88,7 @@ The user clarified that "four files maximum" means **up to four visible comparis
 
 ## Release preparation
 
-- Release feedback destination: the user prefers the future repository’s GitHub Issues page. Add the Help feedback/report-a-bug link once the repository is online and its actual URL is known. No placeholder link or repository has been created; publishing still requires explicit authorization.
+- The preferred destination for bug reports is the public repository’s Issues page. The in-app feedback link is still pending.
 - A portable v1.0 source snapshot is saved locally as `releases/ferge-v1.0-source-soft-buttons.zip` (earlier source and empty-workspace snapshots are preserved), with a companion SHA-256 checksum. It includes application source, vendored runtime, tests, package files, workflow, documentation, and branding assets under a `ferge/` root, plus a per-file hash manifest. It excludes `.git`, private hosting configuration, credentials, dependencies, and the release archive directory itself. `releases/` is ignored by Git. This snapshot is not a deployment; regenerate a fresh snapshot if source changes before publishing.
 
 ## Discussed but not approved or implemented
@@ -174,7 +174,7 @@ Earlier full automated visual browser QA was blocked in the cloud environment by
 - The preview is owner-private. Do not change its audience.
 - The original cloud checkout has `.openai/hosting.json` and a Sites-managed source remote at `git.chatgpt-team.site`. That is not a GitHub push.
 - Portable ZIPs omit `.openai/`, `.git/`, `node_modules/`, and temporary credential-handling scripts. Never copy or reconstruct source credentials from chat history.
-- The Pages workflow is ready, but no GitHub repository or Pages deployment has been created for Ferge by this chat.
+- The public GitHub repository includes a Pages workflow. Repository publication and Pages deployment are separate actions.
 - Local migration is confirmed: the Mac folder contains `dist/`, `tests/`, `package.json`, `package-lock.json`, `.github/`, and the documentation directly in its root, not inside a second nested `ferge/` directory.
 - If the user already copied the previous ZIP, add `AGENTS.md` and `HANDOFF.md` to that root. Do not overwrite local code changes merely to update documentation.
 
