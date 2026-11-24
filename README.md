@@ -4,7 +4,7 @@ A browser-local workbench for comparing and merging **two, three, or four text f
 
 [Open Ferge](https://radtechdad-studio.github.io/Ferge/)
 
-![Ferge workbench comparing four JavaScript files side by side](docs/assets/ferge-four-file-demo.jpg)
+![Ferge workbench comparing four JavaScript files side by side](docs/assets/ferge-workbench.jpg)
 
 ## Run locally
 
