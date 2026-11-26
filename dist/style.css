@@ -274,7 +274,17 @@ select option {
 .header-actions button {
   font-size: 12px;
 }
-.header-actions button:nth-last-child(-n + 2) {
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  border-radius: 5px;
+}
+.github-link:hover {
+  background: var(--accent-soft);
+}
+.header-actions :is(#settingsButton, .github-link, #helpButton) {
   width: 32px;
   padding: 7px;
 }
@@ -1584,7 +1594,7 @@ html[data-color-scheme="dark"] .search-hit {
     gap: 4px;
     font-size: 10px;
   }
-  .header-actions button:nth-last-child(-n + 2) {
+  .header-actions :is(#settingsButton, .github-link, #helpButton) {
     width: 25px;
   }
   .file-shelf {
